@@ -19,5 +19,6 @@ public interface CustomerService {
     public Iterable<Customer> getAllCustomers() throws CustomerEmptyResultException;
     public List<Customer> findCustomersByDate(Date from, Date to) throws CustomerEmptyResultException;
     public Page getAllCustomersPageable(PageRequest request) throws CustomerEmptyResultException;
+    public List<Customer> findCustomersFromShop(Shop shop) throws CustomerEmptyResultException;
 
 }

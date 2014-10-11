@@ -10,4 +10,5 @@ public interface ShopService {
     public void saveShop(String id, String name, String address);
     public Shop findShopById(String id) throws ShopEmptyResultException;
     public Iterable<Shop> getAllShops() throws ShopEmptyResultException;
+
 }

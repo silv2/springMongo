@@ -22,6 +22,10 @@ public class ShopServiceImpl implements ShopService {
         repository.save(shop);
     }
 
+    public void deleteShop(String id){
+        repository.delete(id);
+    }
+
     @Override
     public Shop findShopById(String id) throws ShopEmptyResultException{
         Shop shop = repository.findOne(id);

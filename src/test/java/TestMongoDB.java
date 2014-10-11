@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import sk.mongodb.example.entity.Customer;
+import sk.mongodb.example.entity.Shop;
 import sk.mongodb.example.exceptions.CustomerEmptyResultException;
 import sk.mongodb.example.exceptions.ShopEmptyResultException;
 import sk.mongodb.example.service.impl.CustomerServiceImpl;
@@ -41,7 +42,7 @@ public class TestMongoDB {
     }
 
     @Test
-    public void findById() throws CustomerEmptyResultException {
+    public void findCustomerById() throws CustomerEmptyResultException {
 
         System.out.println(customService.findCustomerById("ID1").toString());
     }
@@ -82,6 +83,32 @@ public class TestMongoDB {
     @Test
     public void getCustomersFromShop() throws ShopEmptyResultException, CustomerEmptyResultException {
         List<Customer> listCustomer =  customService.findCustomersFromShop(shopService.findShopById("IDS"));
+        for(Customer o : listCustomer) {
+            System.out.println(o.toString());
+        }
+    }
+
+    @Test
+    public void deleteShop(){
+        shopService.deleteShop("IDS");
+    }
+
+    @Test
+    public void findAllShops() throws ShopEmptyResultException {
+        Iterable<Shop> allShops = shopService.getAllShops();
+        for(Shop o : allShops) {
+            System.out.println(o.toString());
+        }
+    }
+
+    @Test
+    public void findShopById() throws ShopEmptyResultException {
+        System.out.println(shopService.findShopById("IDS").toString());
+    }
+
+    @Test
+    public void tryIndex() throws CustomerEmptyResultException {
+        List<Customer> listCustomer = customService.tryIndex();
         for(Customer o : listCustomer) {
             System.out.println(o.toString());
         }

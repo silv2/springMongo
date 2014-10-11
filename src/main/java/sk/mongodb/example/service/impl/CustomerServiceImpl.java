@@ -90,11 +90,22 @@ public class CustomerServiceImpl implements CustomerService{
         return allCustomersPageable;
     }
 
+    @Override
     public List<Customer> findCustomersFromShop(Shop shop) throws CustomerEmptyResultException {
         Query query = new Query(where("shop.$id").is(shop.getId()));
         List<Customer> listCustomers = mongoTemplate.find(query, Customer.class);
         if (listCustomers == null) {
             throw new CustomerEmptyResultException("Method findCustomersFromShop(Shop shop) return null");
+        }
+        return listCustomers;
+    }
+
+    public List<Customer> tryIndex() throws CustomerEmptyResultException {
+        Query query = new Query();
+        query.addCriteria(where("registration").exists(true));
+        List<Customer> listCustomers = mongoTemplate.find(query, Customer.class,"customer");
+        if (listCustomers == null) {
+            throw new CustomerEmptyResultException("Method tryIndex() return null");
         }
         return listCustomers;
     }
