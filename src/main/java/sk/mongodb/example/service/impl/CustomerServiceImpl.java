@@ -90,9 +90,12 @@ public class CustomerServiceImpl implements CustomerService{
         return allCustomersPageable;
     }
 
-    public List<Customer> findCustomersFromShop(Shop shop) {
+    public List<Customer> findCustomersFromShop(Shop shop) throws CustomerEmptyResultException {
         Query query = new Query(where("shop.$id").is(shop.getId()));
         List<Customer> listCustomers = mongoTemplate.find(query, Customer.class);
+        if (listCustomers == null) {
+            throw new CustomerEmptyResultException("Method findCustomersFromShop(Shop shop) return null");
+        }
         return listCustomers;
     }
 

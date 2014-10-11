@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.mongodb.example.dao.ShopDAO;
 import sk.mongodb.example.entity.Shop;
+import sk.mongodb.example.exceptions.ShopEmptyResultException;
 import sk.mongodb.example.service.ShopService;
 
 /**
@@ -21,9 +22,23 @@ public class ShopServiceImpl implements ShopService {
         repository.save(shop);
     }
 
-    public Shop findShopById(String id){
+    @Override
+    public Shop findShopById(String id) throws ShopEmptyResultException{
         Shop shop = repository.findOne(id);
+
+        if(shop == null){
+            throw new ShopEmptyResultException("Method findShopById(String id) return null");
+        }
         return shop;
+    }
+
+    @Override
+    public Iterable<Shop> getAllShops() throws ShopEmptyResultException {
+        Iterable<Shop> allCustomers = repository.findAll();
+        if(allCustomers == null){
+            throw new ShopEmptyResultException("Method getAllShops() return null");
+        }
+        return allCustomers;
     }
 
 

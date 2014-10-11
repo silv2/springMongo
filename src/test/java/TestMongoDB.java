@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import sk.mongodb.example.entity.Customer;
 import sk.mongodb.example.exceptions.CustomerEmptyResultException;
+import sk.mongodb.example.exceptions.ShopEmptyResultException;
 import sk.mongodb.example.service.impl.CustomerServiceImpl;
 import sk.mongodb.example.service.impl.ShopServiceImpl;
 
@@ -33,8 +34,9 @@ public class TestMongoDB {
     public void saveShop(){
         shopService.saveShop("IDS", "SHOP", "ADDRESS");
     }
+
     @Test
-    public void saveCustomer(){
+    public void saveCustomer() throws ShopEmptyResultException {
         customService.saveCustomer("ID1", "Silvia", "Macejkova", new Date(1995, 11, 4), shopService.findShopById("IDS"));
     }
 
@@ -78,7 +80,7 @@ public class TestMongoDB {
     }
 
     @Test
-    public void getCustomersFromShop(){
+    public void getCustomersFromShop() throws ShopEmptyResultException, CustomerEmptyResultException {
         List<Customer> listCustomer =  customService.findCustomersFromShop(shopService.findShopById("IDS"));
         for(Customer o : listCustomer) {
             System.out.println(o.toString());
