@@ -1,6 +1,7 @@
 package sk.mongodb.example.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -17,14 +18,15 @@ public class Customer {
     private String firstName;
     private String lastName;
     private Date registration;
+    @DBRef
+    private Shop shop;
 
-    public Customer() {}
-
-    public Customer( String id, String firstName, String lastName, Date registration) {
-        this.registration = registration;
+    public Customer(String id, String firstName, String lastName, Date registration, Shop shop) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.id = id;
+        this.registration = registration;
+        this.shop = shop;
     }
 
     public String getLastName() {
@@ -59,6 +61,14 @@ public class Customer {
         this.registration = registration;
     }
 
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
+    }
+
     @Override
     public String toString() {
         return "Customer{" +
@@ -66,6 +76,7 @@ public class Customer {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", registration=" + registration +
+                ", shop=" + shop.getName() + " address = " + shop.getAddress() +
                 '}';
     }
 

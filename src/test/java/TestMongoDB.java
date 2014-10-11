@@ -7,12 +7,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import sk.mongodb.example.dao.CustomerDAO;
 import sk.mongodb.example.entity.Customer;
 import sk.mongodb.example.exceptions.CustomerEmptyResultException;
 import sk.mongodb.example.service.impl.CustomerServiceImpl;
+import sk.mongodb.example.service.impl.ShopServiceImpl;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Silvia on 8. 10. 2014.
@@ -23,21 +24,29 @@ public class TestMongoDB {
     private ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath*:**/mdwh-client-spring-config.xml");
 
     @Autowired(required=true)
-    public CustomerDAO repository;
+    public CustomerServiceImpl customService;
+    @Autowired(required=true)
+    public ShopServiceImpl shopService;
+
 
     @Test
+    public void saveShop(){
+        shopService.saveShop("IDS", "SHOP", "ADDRESS");
+    }
+    @Test
     public void saveCustomer(){
-        CustomerServiceImpl.getInstance().saveCustomer("ID1","Silvia","Macejkova",new Date(1995, 11, 4));
+        customService.saveCustomer("ID1", "Silvia", "Macejkova", new Date(1995, 11, 4), shopService.findShopById("IDS"));
     }
 
     @Test
     public void findById() throws CustomerEmptyResultException {
-        System.out.println(CustomerServiceImpl.getInstance().findCustomerById("ID1").toString());
+
+        System.out.println(customService.findCustomerById("ID1").toString());
     }
 
     @Test
     public void findAllCustomers() throws CustomerEmptyResultException {
-        Iterable<Customer> allCustomers = CustomerServiceImpl.getInstance().getAllCustomers();
+        Iterable<Customer> allCustomers = customService.getAllCustomers();
         for(Customer o : allCustomers) {
             System.out.println(o.toString());
         }
@@ -45,12 +54,12 @@ public class TestMongoDB {
 
     @Test
     public void deleteCustomer(){
-        CustomerServiceImpl.getInstance().deleteCustomer("543554de9a5820492a1b7785");
+        customService.deleteCustomer("543554de9a5820492a1b7785");
     }
 
     @Test
     public void findCustomersByDate() throws CustomerEmptyResultException {
-        Iterable<Customer> allCustomers = CustomerServiceImpl.getInstance().findCustomersByDate(new Date(1990, 1, 1), new Date(2001, 1, 1));
+        Iterable<Customer> allCustomers = customService.findCustomersByDate(new Date(1990, 1, 1), new Date(2001, 1, 1));
         for(Customer o : allCustomers) {
             System.out.println(o.toString());
         }
@@ -58,7 +67,7 @@ public class TestMongoDB {
 
     @Test
     public void findAllCustomersPageable() throws CustomerEmptyResultException {
-        Page<Customer> listPageable=CustomerServiceImpl.getInstance().getAllCustomersPageable(new PageRequest(0, 10));
+        Page<Customer> listPageable = customService.getAllCustomersPageable(new PageRequest(0, 10));
        for(Customer o : listPageable) {
             System.out.println(o.toString());
         }
@@ -66,6 +75,14 @@ public class TestMongoDB {
 
         System.out.println(listPageable.getNumberOfElements());
 
+    }
+
+    @Test
+    public void getCustomersFromShop(){
+        List<Customer> listCustomer =  customService.findCustomersFromShop(shopService.findShopById("IDS"));
+        for(Customer o : listCustomer) {
+            System.out.println(o.toString());
+        }
     }
 
 }
