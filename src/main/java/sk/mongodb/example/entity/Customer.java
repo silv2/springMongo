@@ -1,8 +1,6 @@
 package sk.mongodb.example.entity;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
-import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,9 +11,6 @@ import java.util.Date;
  */
 
 @Document(collection = "customer")
-@CompoundIndexes({
-        @CompoundIndex(name = "wholeName", def = "{'firstName': 1, 'lastName': 1}")
-})
 public class Customer {
 
     @Id

@@ -24,8 +24,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
  */
 @Service
 public class CustomerServiceImpl implements CustomerService{
-   /* private static CustomerServiceImpl instance;
-    private  ApplicationContext appContext;*/
+
     private MongoOperations mongoOperation;
     @Resource
     private MongoTemplate mongoTemplate;
@@ -84,6 +83,7 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public Page getAllCustomersPageable(PageRequest request) throws CustomerEmptyResultException {
         Page<Customer> allCustomersPageable = repository.findAll(request);
+
         if (allCustomersPageable == null) {
             throw new CustomerEmptyResultException("Method getAllCustomersPageable(PageRequest request) return null");
         }
@@ -100,14 +100,5 @@ public class CustomerServiceImpl implements CustomerService{
         return listCustomers;
     }
 
-    public List<Customer> tryIndex() throws CustomerEmptyResultException {
-        Query query = new Query();
-        query.addCriteria(where("registration").exists(true));
-        List<Customer> listCustomers = mongoTemplate.find(query, Customer.class,"customer");
-        if (listCustomers == null) {
-            throw new CustomerEmptyResultException("Method tryIndex() return null");
-        }
-        return listCustomers;
-    }
 
 }

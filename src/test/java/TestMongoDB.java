@@ -1,8 +1,6 @@
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
@@ -23,7 +21,7 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath*:**/mongodb-example-spring-config.xml" })
 public class TestMongoDB {
-    private ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath*:**/mdwh-client-spring-config.xml");
+
 
     @Autowired(required=true)
     public CustomerServiceImpl customService;
@@ -33,17 +31,16 @@ public class TestMongoDB {
 
     @Test
     public void saveShop(){
-        shopService.saveShop("IDS", "SHOP", "ADDRESS");
+        shopService.saveShop("IDS2", "SHOP2", "ADDRESS2");
     }
 
     @Test
     public void saveCustomer() throws ShopEmptyResultException {
-        customService.saveCustomer("ID1", "Silvia", "Macejkova", new Date(1995, 11, 4), shopService.findShopById("IDS"));
+        customService.saveCustomer("ID1", "Zuzka", "Mrkvickova", new Date(1990, 11, 4), shopService.findShopById("IDS"));
     }
 
     @Test
     public void findCustomerById() throws CustomerEmptyResultException {
-
         System.out.println(customService.findCustomerById("ID1").toString());
     }
 
@@ -57,12 +54,12 @@ public class TestMongoDB {
 
     @Test
     public void deleteCustomer(){
-        customService.deleteCustomer("543554de9a5820492a1b7785");
+        customService.deleteCustomer("ID1");
     }
 
     @Test
     public void findCustomersByDate() throws CustomerEmptyResultException {
-        Iterable<Customer> allCustomers = customService.findCustomersByDate(new Date(1990, 1, 1), new Date(2001, 1, 1));
+        Iterable<Customer> allCustomers = customService.findCustomersByDate(new Date(1989, 1, 1), new Date(2001, 1, 1));
         for(Customer o : allCustomers) {
             System.out.println(o.toString());
         }
@@ -106,12 +103,5 @@ public class TestMongoDB {
         System.out.println(shopService.findShopById("IDS").toString());
     }
 
-    @Test
-    public void tryIndex() throws CustomerEmptyResultException {
-        List<Customer> listCustomer = customService.tryIndex();
-        for(Customer o : listCustomer) {
-            System.out.println(o.toString());
-        }
-    }
 
 }

@@ -14,10 +14,8 @@
         http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
     <context:component-scan base-package="sk.mongodb.example.service.impl" />
-    <context:component-scan base-package="sk.mongodb.example.spring" />
     <context:component-scan base-package="sk.mongodb.example.dao" />
     <context:property-placeholder location="classpath:mongo.properties" />
-
 
     <mongo:db-factory dbname="${mongo.dbname}" />
 
@@ -25,12 +23,10 @@
 
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg ref="mongoDbFactory"/>
-
     </bean>
 
     <mongo:db-factory id="mongoDbFactory" mongo-ref="mongo" dbname="${mongo.dbname}" username="${mongo.username}" password="${mongo.password}" />
 
-    <bean id="applicationContextProvider" class="sk.mongodb.example.spring.ApplicationContextProvider"></bean>
     <tx:annotation-driven/>
     <mongo:repositories base-package="sk.mongodb.example.dao" />
 
